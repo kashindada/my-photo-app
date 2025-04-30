@@ -1,5 +1,5 @@
 /* App.css */
-:root { --blue:#183ea5; --gray:#f0f0f0; --radius:6px; }
+:root{--blue:#183ea5;--gray:#f0f0f0;--radius:6px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#fafafa;color:#1c1c1e}
 .wrapper{max-width:450px;margin:0 auto;padding:24px 16px 80px}
@@ -9,15 +9,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .back path{stroke:#000;stroke-width:3;fill:none}
 .top h1{flex:1;text-align:center;font-size:18px;font-weight:600;line-height:32px}
 .tabs{position:relative;display:flex;background:var(--gray);border-radius:10px;overflow:hidden;height:36px;margin-bottom:24px}
-.slider {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: calc(50% - 4px);
-  height: calc(100% - 4px);
-  background: #fff;
-  transition: transform 0.2s, border-radius 0.2s;
-}
+.slider{position:absolute;top:2px;left:0;width:calc(50%);height:calc(100%-4px);background:#fff;transition:transform .2s,border-radius .2s;border-radius:10px}
 .tab{flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;color:#666;font-weight:500;z-index:1}
 .tab.active{color:#000}
 .card{width:100%;background:#fff;overflow:hidden;border-radius:var(--radius);margin-bottom:10px;padding:12px}
