@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Удостоверение личности</title>
+  <style>
+    :root {
+      --blue:   #183ea5;
+      --gray:   #f0f0f0;
+      --radius: 6px;
+      --shadow: none;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body {
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+      background:#fafafa;
+      color:#1c1c1e;
+    }
+    .wrapper {
+      max-width:450px;
+      margin:0 auto;
+      padding:24px 16px 80px;
+    }
+
+    /* header */
+    .top{display:flex;align-items:center;height:32px;margin-bottom:20px}
+    .back{width:24px;height:24px;cursor:pointer;margin-right:auto}
+    .back svg{width:100%;height:100%}
+    .back path{stroke:#000;stroke-width:3;fill:none}
+    .top h1{flex:1;text-align:center;font-size:18px;font-weight:600;line-height:32px}
+
+    /* tabs */
+    .tabs{position:relative;display:flex;background:var(--gray);border-radius:var(--radius);overflow:hidden;height:36px;margin-bottom:24px}
+    .slider{position:absolute;top:0;left:0;width:50%;height:100%;background:#fff;transition:transform .2s}
+    .tab{flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;color:#666;font-weight:500;z-index:1}
+    .tab.active{color:#000}
+
+    /* card */
+    .card{width:100%;background:#fff;overflow:hidden;border-radius:var(--radius);margin-bottom:10px;}
+    .card img{width:auto;height:auto;object-fit: contain;display:none}
+
+    /* hidden input */
+    .file-input{display:none}
+
+    /* buttons */
+    .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px 0;font-size:16px;font-weight:600;border-radius:var(--radius);cursor:pointer;transition:opacity .2s;border:none}
+    .btn.primary{background:var(--blue);color:#fff}
+    .btn.primary .icon{width:16px;height:16px;filter:brightness(0) invert(1);}
+    .btn.secondary{margin-top:12px;background:transparent;color:var(--blue);border:2px solid var(--blue)}
+    .btn.secondary .icon{width:16px;height:16px;filter:invert(35%) sepia(100%) saturate(748%) hue-rotate(183deg) brightness(101%) contrast(101%);}
+    .btn:disabled{ /* убрать эффект прозрачности */ opacity:1;cursor:default }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <!-- header -->
+    <div class="top">
+      <div class="back" onclick="history.back()">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <h1>Удостоверение личности</h1>
+    </div>
+
+    <!-- tabs -->
+    <div class="tabs">
+      <div class="slider" id="slider"></div>
+      <div class="tab active" id="tab-doc">Документ</div>
+      <div class="tab"        id="tab-req">Реквизиты</div>
+    </div>
+
+    <!-- card -->
+    <div class="card" id="card">
+      <img id="preview-doc" />
+      <img id="preview-req" />
+    </div>
+
+    <!-- hidden input -->
+    <input type="file" accept="image/*" id="fileInput" class="file-input">
+
+    <!-- buttons -->
+    <button class="btn primary" id="uploadBtn">
+      <img class="icon" src="https://www.svgrepo.com/show/355991/qr-alt.svg" alt="">
+      Предъявить документ
+    </button>
+    <button class="btn secondary" id="sendBtn" disabled>
+      <img class="icon" src="https://www.svgrepo.com/show/311182/share-ios.svg" alt="">
+      Отправить документ
+    </button>
+  </div>
+
+  <script>
+    const tabDoc    = document.getElementById('tab-doc');
+    const tabReq    = document.getElementById('tab-req');
+    const slider    = document.getElementById('slider');
+    const card      = document.getElementById('card');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const sendBtn   = document.getElementById('sendBtn');
+    const fileInput = document.getElementById('fileInput');
+    const prevDoc   = document.getElementById('preview-doc');
+    const prevReq   = document.getElementById('preview-req');
+    let active = 'doc';
+
+    function switchTab(tab){
+      active = tab;
+      tabDoc.classList.toggle('active', tab==='doc');
+      tabReq.classList.toggle('active', tab==='req');
+      slider.style.transform = tab==='doc'? 'translateX(0)' : 'translateX(100%)';
+      // show/hide previews
+      prevDoc.style.display = (tab==='doc' && prevDoc.src)?'block':'none';
+      prevReq.style.display = (tab==='req' && prevReq.src)?'block':'none';
+    }
+    tabDoc.onclick = ()=>switchTab('doc');
+    tabReq.onclick = ()=>switchTab('req');
+
+    uploadBtn.onclick = ()=> fileInput.click();
+
+    fileInput.onchange = ()=>{
+      if(!fileInput.files[0]) return;
+      const url = URL.createObjectURL(fileInput.files[0]);
+      if(active==='doc'){
+        prevDoc.src = url;
+        prevDoc.onload = ()=>URL.revokeObjectURL(url);
+        prevDoc.style.display = 'block';
+      } else {
+        prevReq.src = url;
+        prevReq.onload = ()=>URL.revokeObjectURL(url);
+        prevReq.style.display = 'block';
+      }
+      if(prevDoc.src && prevReq.src) sendBtn.disabled = false;
+    };
+
+    // init
+    switchTab('doc');
+  </script>
+</body>
+</html>
