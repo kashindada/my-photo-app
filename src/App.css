@@ -87,11 +87,15 @@ body {
   margin-bottom: 10px;
 }
 .card img {
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
+  display: block;            /* чтобы margin сработал */
+  margin: 0 auto;            /* центр по горизонтали */
+  max-width: 100%;           /* не выйдет за ширину контейнера */
+  max-height: 100vh;         /* не выйдет за высоту экрана */
+  min-width: 350px;          /* минимум 350px по ширине */
+  min-height: 350px;         /* минимум 350px по высоте */
+  object-fit: contain;       /* сохраняет пропорции */
 }
+
 .file-input {
   display: none;
 }
